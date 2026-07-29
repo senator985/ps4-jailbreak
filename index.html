@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <title>جیلبریک PS4 - گیمنت ماریو</title>
+    <style>
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('fonts/Vazirmatn-Regular.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'logging';
+            src: url('fonts/LiberationMono-Regular.ttf') format('truetype');
+        }
+
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        body {
+            background-color: #060713;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(13, 15, 45, 0.6) 0%, rgba(6, 7, 19, 1) 100%),
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 100%, 100% 4px, 6px 100%;
+            color: #e2e8f0;
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Responsive width instead of fixed 1280px */
+            height: 720px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 4px solid #3b82f6;
+            box-shadow: inset 0 0 40px rgba(59, 130, 246, 0.5);
+            position: relative;
+        }
+
+        /* Cyberpunk scanline effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 10;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Header Layout */
+        header {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.4);
+            background: rgba(10, 12, 36, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container {
+            width: 65px;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+            padding: 5px;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .brand-details {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .brand-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #00f0ff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin: 2px 0 0 0;
+            letter-spacing: 0.5px;
+        }
+
+        .header-contact {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .phone-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff007f;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+            direction: ltr;
+            margin: 0;
+        }
+
+        .contact-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+            text-align: left;
+        }
+
+        /* Main Content Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            padding: 20px 40px;
+            gap: 25px;
+            height: calc(720px - 100px);
+            z-index: 20;
+        }
+
+        /* Left side: Console / Exploit terminal */
+        .terminal-panel {
+            flex: 1.4;
+            display: flex;
+            flex-direction: column;
+            background: rgba(5, 6, 21, 0.95);
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .terminal-panel::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #00f0ff, #ff007f);
+        }
+
+        .terminal-header {
+            background: #0f1123;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .terminal-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #3b82f6;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .terminal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ef4444;
+        }
+        .dot.yellow { background-color: #f59e0b; }
+        .dot.green { background-color: #10b981; }
+
+        /* Console styling */
+        #console {
+            flex: 1;
+            padding: 20px;
+            margin: 0;
+            overflow-y: auto;
+            font-family: 'logging', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #00f0ff;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+            background-color: #03040c;
+            border: none;
+            outline: none;
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Custom Scrollbar for Console */
+        #console::-webkit-scrollbar {
+            width: 8px;
+        }
+        #console::-webkit-scrollbar-track {
+            background: #050615;
+        }
+        #console::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        #console::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
+
+        /* Right side: Instructions and Controls */
+        .control-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .status-card {
+            background: rgba(10, 12, 36, 0.85);
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .status-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .status-label {
+            color: #94a3b8;
+        }
+
+        .status-val {
+            color: #00f0ff;
+            font-weight: bold;
+        }
+
+        .instruction-card {
+            background: rgba(10, 12, 36, 0.85);
+            border: 2px solid #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .instruction-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .instruction-list {
+            padding-right: 20px;
+            margin: 0;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .instruction-list li {
+            margin-bottom: 8px;
+        }
+
+        /* Footer Info */
+        .footer-credits {
+            font-size: 11px;
+            color: #475569;
+            text-align: center;
+            margin-top: auto;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-credits a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+    </style>
+    <script>
+    if (window.applicationCache && window.applicationCache.status == '0') {
+        window.location.replace("cache.html");
+    }
+    </script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-brand">
+            <div class="logo-container">
+                <img src="logo.svg" alt="گیمنت ماریو" />
+            </div>
+            <div class="brand-details">
+                <h1 class="brand-title">گیمنت ماریو</h1>
+                <p class="brand-subtitle">میزبان جیلبریک اختصاصی و خودکار پلی‌استیشن ۴</p>
+            </div>
+        </div>
+        <div class="header-contact">
+            <p class="phone-number">09130018195</p>
+            <p class="contact-label">تلفن پشتیبانی و تماس</p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Exploit Console (Left) -->
+        <div class="terminal-panel">
+            <div class="terminal-header">
+                <div class="terminal-title">
+                    <span class="terminal-status-indicator"></span>
+                    <span>کنسول جیلبریک / گزارش زنده عملیات</span>
+                </div>
+                <div class="terminal-actions">
+                    <span class="dot"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+            </div>
+            <pre id="console">در حال آماده‌سازی و شروع فرآیند اکسپلویت...</pre>
+        </div>
+
+        <!-- Controls & Instructions (Right) -->
+        <div class="control-panel">
+            <div class="status-card">
+                <h2 class="status-title">وضعیت سیستم</h2>
+                <div class="status-row">
+                    <span class="status-label">کنسول هدف:</span>
+                    <span class="status-val">PlayStation 4 (9.00)</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">موتور جیلبریک:</span>
+                    <span class="status-val" style="color: #ff007f;">PSFree-Lapse</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">GoldHEN:</span>
+                    <span class="status-val" style="color: #10b981;">آماده بارگذاری خودکار</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">حالت آفلاین:</span>
+                    <span class="status-val" style="color: #10b981;">فعال (میزبانی محلی)</span>
+                </div>
+            </div>
+
+            <div class="instruction-card">
+                <h2 class="instruction-title">دستورالعمل‌ها</h2>
+                <ol class="instruction-list">
+                    <li>تا زمان اتمام جیلبریک به هیچ وجه صفحه را نبندید یا ریلود نکنید.</li>
+                    <li>اکسپلویت به صورت کاملاً خودکار بلافاصله پس از لود صفحه شروع می‌شود.</li>
+                    <li>مراحل اجرای فرآیند را در کنسول سمت راست دنبال کنید.</li>
+                    <li>در صورت بروز پیام موفقیت، دکمه PS روی کنترلر را فشار دهید.</li>
+                </ol>
+
+                <div class="footer-credits">
+                    <span>گیمنت ماریو - ۱۴۰۴</span>
+                    <a href="./about.html" data-jslicense="1">اطلاعات لایسنس نرم‌افزار</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exploit Backend Scripts -->
+    <script type="module" src="./alert.mjs"></script>
+</body>
+</html>
